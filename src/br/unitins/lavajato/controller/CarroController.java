@@ -1,19 +1,13 @@
 package br.unitins.lavajato.controller;
 
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import br.unitins.lavajato.application.Util;
 import br.unitins.lavajato.dao.CarroDAO;
-import br.unitins.lavajato.factory.ConnectionFactory;
 import br.unitins.lavajato.model.Carro;
 import br.unitins.lavajato.model.Categoria;
 import br.unitins.lavajato.model.Marca;
@@ -31,36 +25,6 @@ public class CarroController implements Serializable {
 
 	public List<Carro> getListaCarro() {
 		if (listaCarro == null) {
-			listaCarro = new ArrayList<Carro>();
-			Connection conn = ConnectionFactory.getInstance();
-			PreparedStatement stat = null;
-			if (conn == null) {
-				Util.addMessageError("Falha ao conectar ao Banco de Dados.");
-			} else {
-				try {
-					stat = conn.prepareStatement("SELECT * FROM Carro ORDER BY modelo ASC");
-					ResultSet rs = stat.executeQuery();
-					while (rs.next()) {
-						Carro c = new Carro();
-						c.setId(rs.getInt("id"));
-						c.setPlaca(rs.getString("placa"));
-						c.setModelo(rs.getString("modelo"));
-						c.setCategoria(Categoria.valueOf(rs.getInt("categoria")));
-						c.setMarca(Marca.valueOf(rs.getInt("marca")));
-
-						listaCarro.add(c);
-					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-				} finally {
-					try {
-						stat.close();
-						conn.close();
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-				}
-			}
 		}
 		return listaCarro;
 	}

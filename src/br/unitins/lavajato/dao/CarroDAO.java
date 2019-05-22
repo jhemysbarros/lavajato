@@ -2,12 +2,16 @@ package br.unitins.lavajato.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.unitins.lavajato.application.Util;
 import br.unitins.lavajato.factory.ConnectionFactory;
 import br.unitins.lavajato.model.Carro;
+import br.unitins.lavajato.model.Categoria;
+import br.unitins.lavajato.model.Marca;
 
 public class CarroDAO implements DAO<Carro> {
 
@@ -81,6 +85,40 @@ public class CarroDAO implements DAO<Carro> {
 
 	@Override
 	public List<Carro> findAll(Carro obj) {
-		return null;
+		// Verificando se tem uma conexão válida
+		if (getConnection() == null) {
+			Util.addMessageError("Falha ao conectar ao Banco de Dados.");
+			return null;
+		}
+
+		List<Carro> listaCarro = new ArrayList<Carro>();
+
+		PreparedStatement stat = null;
+		try {
+			stat = conn.prepareStatement("SELECT * FROM Carro ORDER BY modelo ASC");
+			ResultSet rs = stat.executeQuery();
+			while (rs.next()) {
+				Carro c = new Carro();
+				c.setId(rs.getInt("id"));
+				c.setPlaca(rs.getString("placa"));
+				c.setModelo(rs.getString("modelo"));
+				c.setCategoria(Categoria.valueOf(rs.getInt("categoria")));
+				c.setMarca(Marca.valueOf(rs.getInt("marca")));
+
+				listaCarro.add(c);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			Util.addMessageError("Falha ao consultar o Banco de Dados.");
+			listaCarro = null;
+		} finally {
+			try {
+				stat.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+		return listaCarro;
 	}
 }
