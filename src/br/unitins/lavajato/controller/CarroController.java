@@ -12,6 +12,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import br.unitins.lavajato.application.Util;
+import br.unitins.lavajato.dao.CarroDAO;
 import br.unitins.lavajato.factory.ConnectionFactory;
 import br.unitins.lavajato.model.Carro;
 import br.unitins.lavajato.model.Categoria;
@@ -70,40 +71,13 @@ public class CarroController implements Serializable {
 
 	// Método para incluir um carro.
 	public void incluir() {
-		Connection conn = ConnectionFactory.getInstance();
-
-		if (conn == null) {
-			Util.addMessageError("Falha ao conectar ao Banco de Dados.");
-			return;
-		}
-		PreparedStatement stat = null;
-		try {
-			stat = conn.prepareStatement(
-					"INSERT INTO carro (placa,  categoria, modelo, marca) " + "VALUES ( ?, ?, ?, ? )");
-
-			stat.setString(1, getCarro().getPlaca());
-			stat.setInt(2, getCarro().getCategoria().getValue());
-			stat.setString(3, getCarro().getModelo());
-			stat.setInt(4, getCarro().getMarca().getValue());
-
-			stat.execute();
-
+		CarroDAO dao = new CarroDAO();
+		if (dao.create(getCarro())) {
 			limpar();
 			// Para atualizar o dataTable
 			listaCarro = null;
-
-			Util.addMessageError("Cadastro realizado com sucesso!");
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				stat.close();
-				conn.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
+		dao.closeConnection();
 	}
 
 	public Marca[] getListaMarca() {
