@@ -53,15 +53,20 @@
 				</h:column>
 
 				<h:column>
+					<f:facet name="header">Modelo</f:facet>
+					<h:commandLink value="#{obj.modelo}"
+						actionListener="#{carroController.editar(obj)}" />
+				</h:column>
+
+				<h:column>
 					<f:facet name="header">Placa</f:facet>
 					<h:commandLink value="#{obj.placa}"
 						actionListener="#{carroController.editar(obj)}" />
 				</h:column>
 
 				<h:column>
-					<f:facet name="header">Modelo</f:facet>
-					<h:commandLink value="#{obj.modelo}"
-						actionListener="#{carroController.editar(obj)}" />
+					<f:facet name="header">Marca</f:facet>
+					<h:outputLabel value="#{obj.marca.label}" />
 				</h:column>
 
 				<h:column>
@@ -69,10 +74,6 @@
 					<h:outputLabel value="#{obj.categoria.label}" />
 				</h:column>
 
-				<h:column>
-					<f:facet name="header">Marca</f:facet>
-					<h:outputLabel value="#{obj.marca.label}" />
-				</h:column>
 			</h:dataTable>
 		</h:form>
 	</center>

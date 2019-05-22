@@ -37,7 +37,7 @@ public class CarroController implements Serializable {
 				Util.addMessageError("Falha ao conectar ao Banco de Dados.");
 			} else {
 				try {
-					stat = conn.prepareStatement("SELECT * FROM Carro");
+					stat = conn.prepareStatement("SELECT * FROM Carro ORDER BY modelo ASC");
 					ResultSet rs = stat.executeQuery();
 					while (rs.next()) {
 						Carro c = new Carro();
@@ -89,6 +89,8 @@ public class CarroController implements Serializable {
 			stat.execute();
 
 			limpar();
+			// Para atualizar o dataTable
+			listaCarro = null;
 
 			Util.addMessageError("Cadastro realizado com sucesso!");
 
