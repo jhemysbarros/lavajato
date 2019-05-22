@@ -64,6 +64,10 @@ public class CarroController implements Serializable {
 		return listaCarro;
 	}
 
+	public void editar(Carro carro) {
+		// setCarro((Usuario)usuario.getClone());
+	}
+
 	// Método para incluir um carro.
 	public void incluir() {
 		Connection conn = ConnectionFactory.getInstance();

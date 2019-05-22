@@ -45,6 +45,35 @@
 					actionListener="#{carroController.limpar}" />
 
 			</h:panelGrid>
+
+			<h:dataTable value="#{carroController.listaCarro}" var="obj">
+				<h:column>
+					<f:facet name="header">Id</f:facet>
+					<h:outputLabel value="#{obj.id}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Placa</f:facet>
+					<h:commandLink value="#{obj.placa}"
+						actionListener="#{carroController.editar(obj)}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Modelo</f:facet>
+					<h:commandLink value="#{obj.modelo}"
+						actionListener="#{carroController.editar(obj)}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Categoria</f:facet>
+					<h:outputLabel value="#{obj.categoria.label}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Marca</f:facet>
+					<h:outputLabel value="#{obj.marca.label}" />
+				</h:column>
+			</h:dataTable>
 		</h:form>
 	</center>
 </h:body>
