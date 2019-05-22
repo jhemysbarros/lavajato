@@ -32,11 +32,12 @@ public class CarroController implements Serializable {
 		if (listaCarro == null) {
 			listaCarro = new ArrayList<Carro>();
 			Connection conn = ConnectionFactory.getInstance();
+			PreparedStatement stat = null;
 			if (conn == null) {
 				Util.addMessageError("Falha ao conectar ao Banco de Dados.");
 			} else {
 				try {
-					PreparedStatement stat = conn.prepareStatement("SELECT * FROM Carro");
+					stat = conn.prepareStatement("SELECT * FROM Carro");
 					ResultSet rs = stat.executeQuery();
 					while (rs.next()) {
 						Carro c = new Carro();
@@ -45,13 +46,21 @@ public class CarroController implements Serializable {
 						c.setModelo(rs.getString("modelo"));
 						c.setCategoria(Categoria.valueOf(rs.getInt("categoria")));
 						c.setMarca(Marca.valueOf(rs.getInt("marca")));
+
+						listaCarro.add(c);
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
+				} finally {
+					try {
+						stat.close();
+						conn.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
-
 		return listaCarro;
 	}
 
