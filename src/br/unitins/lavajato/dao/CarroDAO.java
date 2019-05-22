@@ -84,7 +84,7 @@ public class CarroDAO implements DAO<Carro> {
 	}
 
 	@Override
-	public List<Carro> findAll(Carro obj) {
+	public List<Carro> findAll() {
 		// Verificando se tem uma conexão válida
 		if (getConnection() == null) {
 			Util.addMessageError("Falha ao conectar ao Banco de Dados.");

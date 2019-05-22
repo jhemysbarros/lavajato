@@ -12,5 +12,5 @@ public interface DAO<T> {
 
 	T findById(int obj);
 
-	List<T> findAll(T obj);
+	List<T> findAll();
 }

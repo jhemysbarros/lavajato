@@ -1,7 +1,7 @@
 package br.unitins.lavajato.controller;
 
 import java.io.Serializable;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.view.ViewScoped;
@@ -25,6 +25,12 @@ public class CarroController implements Serializable {
 
 	public List<Carro> getListaCarro() {
 		if (listaCarro == null) {
+			CarroDAO dao = new CarroDAO();
+			listaCarro = dao.findAll();
+			if (listaCarro == null) {
+				listaCarro = new ArrayList<Carro>();
+			}
+			dao.closeConnection();
 		}
 		return listaCarro;
 	}
