@@ -19,4 +19,14 @@ public enum Marca {
 	public String getLabel() {
 		return label;
 	}
+
+	// Retorna uma marca a aprtir de um valor inteiro
+	public static Marca valueOf(int value) {
+		for (Marca marca : Marca.values()) {
+			if (marca.getValue() == value) {
+				return marca;
+			}
+		}
+		return null;
+	}
 }

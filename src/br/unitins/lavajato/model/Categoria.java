@@ -19,4 +19,14 @@ public enum Categoria {
 	public String getLabel() {
 		return label;
 	}
+
+	// Retorna uma categoria a aprtir de um valor inteiro
+	public static Categoria valueOf(int value) {
+		for (Categoria cat : Categoria.values()) {
+			if (cat.getValue() == value) {
+				return cat;
+			}
+		}
+		return null;
+	}
 }

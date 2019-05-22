@@ -3,7 +3,10 @@ package br.unitins.lavajato.controller;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -22,6 +25,35 @@ public class CarroController implements Serializable {
 	private static final long serialVersionUID = -1950413541038990627L;
 
 	private Carro carro;
+
+	private List<Carro> listaCarro = null;
+
+	public List<Carro> getListaCarro() {
+		if (listaCarro == null) {
+			listaCarro = new ArrayList<Carro>();
+			Connection conn = ConnectionFactory.getInstance();
+			if (conn == null) {
+				Util.addMessageError("Falha ao conectar ao Banco de Dados.");
+			} else {
+				try {
+					PreparedStatement stat = conn.prepareStatement("SELECT * FROM Carro");
+					ResultSet rs = stat.executeQuery();
+					while (rs.next()) {
+						Carro c = new Carro();
+						c.setId(rs.getInt("id"));
+						c.setPlaca(rs.getString("placa"));
+						c.setModelo(rs.getString("modelo"));
+						c.setCategoria(Categoria.valueOf(rs.getInt("categoria")));
+						c.setMarca(Marca.valueOf(rs.getInt("marca")));
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return listaCarro;
+	}
 
 	// Método para incluir um carro.
 	public void incluir() {
