@@ -35,14 +35,37 @@ public class CarroController implements Serializable {
 		return listaCarro;
 	}
 
-	public void editar(Carro carro) {
-		// setCarro((Usuario)usuario.getClone());
+	public void editar(Integer id) {
+		CarroDAO dao = new CarroDAO();
+		setCarro(dao.findById(id));
 	}
 
 	// Método para incluir um carro.
 	public void incluir() {
 		CarroDAO dao = new CarroDAO();
 		if (dao.create(getCarro())) {
+			limpar();
+			// Para atualizar o dataTable
+			listaCarro = null;
+		}
+		dao.closeConnection();
+	}
+
+	// Método para alterar um carro.
+	public void alterar() {
+		CarroDAO dao = new CarroDAO();
+		if (dao.update(getCarro())) {
+			limpar();
+			// Para atualizar o dataTable
+			listaCarro = null;
+		}
+		dao.closeConnection();
+	}
+
+	// Método para excluir um carro.
+	public void excluir() {
+		CarroDAO dao = new CarroDAO();
+		if (dao.delete(getCarro())) {
 			limpar();
 			// Para atualizar o dataTable
 			listaCarro = null;

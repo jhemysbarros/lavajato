@@ -41,6 +41,14 @@
 				<h:commandButton value="Incluir"
 					disabled="#{carroController.carro.id != null}"
 					actionListener="#{carroController.incluir}" />
+
+				<h:commandButton value="Alterar"
+					disabled="#{carroController.carro.id == null}"
+					actionListener="#{carroController.alterar}" />
+
+				<h:commandButton value="Excluir"
+					disabled="#{carroController.carro.id != null}"
+					actionListener="#{carroController.excluir}" />
 				<h:commandButton value="Limpar"
 					actionListener="#{carroController.limpar}" />
 
@@ -55,13 +63,13 @@
 				<h:column>
 					<f:facet name="header">Modelo</f:facet>
 					<h:commandLink value="#{obj.modelo}"
-						actionListener="#{carroController.editar(obj)}" />
+						actionListener="#{carroController.editar(obj.id)}" />
 				</h:column>
 
 				<h:column>
 					<f:facet name="header">Placa</f:facet>
 					<h:commandLink value="#{obj.placa}"
-						actionListener="#{carroController.editar(obj)}" />
+						actionListener="#{carroController.editar(obj.id)}" />
 				</h:column>
 
 				<h:column>

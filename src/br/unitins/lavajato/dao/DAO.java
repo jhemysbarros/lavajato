@@ -1,16 +1,39 @@
 package br.unitins.lavajato.dao;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
-public interface DAO<T> {
+import br.unitins.lavajato.factory.ConnectionFactory;
 
-	boolean create(T obj);
+public abstract class DAO<T> {
 
-	boolean update(T obj);
+	private Connection conn = null;
 
-	boolean delete(T obj);
+	public Connection getConnection() {
+		if (conn == null) {
+			conn = ConnectionFactory.getInstance();
+		}
+		return conn;
+	}
 
-	T findById(int obj);
+	public void closeConnection() {
+		try {
+			getConnection().close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			conn = null;
+		}
+	}
 
-	List<T> findAll();
+	public abstract boolean create(T obj);
+
+	public abstract boolean update(T obj);
+
+	public abstract boolean delete(T obj);
+
+	public abstract T findById(int obj);
+
+	public abstract List<T> findAll();
 }

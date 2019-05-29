@@ -1,6 +1,5 @@
 package br.unitins.lavajato.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,29 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.unitins.lavajato.application.Util;
-import br.unitins.lavajato.factory.ConnectionFactory;
 import br.unitins.lavajato.model.Carro;
 import br.unitins.lavajato.model.Categoria;
 import br.unitins.lavajato.model.Marca;
 
-public class CarroDAO implements DAO<Carro> {
-
-	private Connection conn = null;
-
-	private Connection getConnection() {
-		if (conn == null) {
-			conn = ConnectionFactory.getInstance();
-		}
-		return conn;
-	}
-
-	public void closeConnection() {
-		try {
-			getConnection().close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+public class CarroDAO extends DAO<Carro> {
 
 	@Override
 	public boolean create(Carro obj) {
@@ -70,7 +51,40 @@ public class CarroDAO implements DAO<Carro> {
 
 	@Override
 	public boolean update(Carro obj) {
-		return false;
+		boolean resultado = false;
+
+		// Verificando se tem uma conexão válida
+		if (getConnection() == null) {
+			Util.addMessageError("Falha ao conectar ao Banco de Dados.");
+			return false;
+		}
+		PreparedStatement stat = null;
+		try {
+			stat = getConnection()
+					.prepareStatement("UPDATE carro SET placa = ?, categoria = ?, modelo = ?, marca = ? WHERE id = ?");
+
+			stat.setString(1, obj.getPlaca());
+			stat.setInt(2, obj.getCategoria().getValue());
+			stat.setString(3, obj.getModelo());
+			stat.setInt(4, obj.getMarca().getValue());
+			stat.setInt(5, obj.getId());
+
+			stat.execute();
+			Util.addMessageError("Cadastro realizado com sucesso!");
+			resultado = true;
+
+		} catch (SQLException e) {
+			Util.addMessageError("Falha ao incuir.");
+			e.printStackTrace();
+		} finally {
+			try {
+				stat.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return resultado;
+
 	}
 
 	@Override
@@ -79,8 +93,43 @@ public class CarroDAO implements DAO<Carro> {
 	}
 
 	@Override
-	public Carro findById(int obj) {
-		return null;
+	public Carro findById(int id) {
+		// Verificando se tem uma conexão válida
+		if (getConnection() == null) {
+			Util.addMessageError("Falha ao conectar ao Banco de Dados.");
+			return null;
+		}
+
+		Carro carro = null;
+
+		PreparedStatement stat = null;
+		try {
+			// ? previnir sql injector
+			stat = getConnection().prepareStatement("SELECT * FROM Carro WHERE id = ?");
+			stat.setInt(1, id);
+
+			ResultSet rs = stat.executeQuery();
+			if (rs.next()) {
+				carro = new Carro();
+				carro.setId(rs.getInt("id"));
+				carro.setPlaca(rs.getString("placa"));
+				carro.setModelo(rs.getString("modelo"));
+				carro.setCategoria(Categoria.valueOf(rs.getInt("categoria")));
+				carro.setMarca(Marca.valueOf(rs.getInt("marca")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			Util.addMessageError("Falha ao consultar o Banco de Dados.");
+		} finally {
+			try {
+				stat.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+		return carro;
+
 	}
 
 	@Override
@@ -95,7 +144,7 @@ public class CarroDAO implements DAO<Carro> {
 
 		PreparedStatement stat = null;
 		try {
-			stat = conn.prepareStatement("SELECT * FROM Carro ORDER BY modelo ASC");
+			stat = getConnection().prepareStatement("SELECT * FROM Carro ORDER BY modelo ASC");
 			ResultSet rs = stat.executeQuery();
 			while (rs.next()) {
 				Carro c = new Carro();
