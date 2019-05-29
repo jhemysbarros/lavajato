@@ -47,8 +47,9 @@
 					actionListener="#{carroController.alterar}" />
 
 				<h:commandButton value="Excluir"
-					disabled="#{carroController.carro.id != null}"
+					disabled="#{carroController.carro.id == null}"
 					actionListener="#{carroController.excluir}" />
+
 				<h:commandButton value="Limpar"
 					actionListener="#{carroController.limpar}" />
 

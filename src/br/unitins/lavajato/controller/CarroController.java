@@ -65,7 +65,7 @@ public class CarroController implements Serializable {
 	// Método para excluir um carro.
 	public void excluir() {
 		CarroDAO dao = new CarroDAO();
-		if (dao.delete(getCarro())) {
+		if (dao.delete(getCarro().getId())) {
 			limpar();
 			// Para atualizar o dataTable
 			listaCarro = null;

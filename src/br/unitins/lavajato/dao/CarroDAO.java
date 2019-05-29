@@ -88,8 +88,34 @@ public class CarroDAO extends DAO<Carro> {
 	}
 
 	@Override
-	public boolean delete(Carro obj) {
-		return false;
+	public boolean delete(int id) {
+boolean resultado = false;
+		
+		// verificando se tem uma conexao valida
+		if (getConnection() == null) {
+			Util.addMessageError("Falha ao conectar ao Banco de Dados.");
+			return false;
+		}
+		
+		PreparedStatement stat = null;
+		try {
+			stat =	getConnection().prepareStatement("DELETE FROM carro WHERE id = ? ");
+			stat.setInt(1, id);
+			
+			stat.execute();
+			Util.addMessageError("Exclusão realizada com sucesso!");
+			resultado = true;
+		} catch (SQLException e) {
+			Util.addMessageError("Falha ao Excluir.");
+			e.printStackTrace();
+		} finally {
+			try {
+				stat.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return resultado;
 	}
 
 	@Override
