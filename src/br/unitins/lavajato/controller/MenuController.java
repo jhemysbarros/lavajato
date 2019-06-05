@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import br.unitins.lavajato.application.Util;
 import br.unitins.lavajato.application.Session;
 import br.unitins.lavajato.model.Usuario;
 
@@ -28,5 +29,19 @@ public class MenuController implements Serializable {
 		this.usuarioLogado = usuarioLogado;
 	}
 	
+	public void entrarLogin() {
+		Util.redirect("login.xhtml");
+	}
 	
+	public void entrarCadastroUsuario() {
+		Util.redirect("usuario.xhtml");
+	}
+	
+	public void entrarCadastroCarro() {
+		Util.redirect("carro.xhtml");
+	}
+	
+	public void entrarConsultaUsuario() {
+		Util.redirect("consultausuario.xhtml");
+	}
 }

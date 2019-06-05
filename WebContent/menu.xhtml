@@ -12,10 +12,14 @@
 		<h:messages style="color:red" />
 		<h:form>
 			<h:panelGrid columns="2">
-				<h:commandButton value="Cadastrar Carro"
-					action="#{carroController.cadastroCarro}" />
+				<h:commandButton value="Voltar para Login"
+					action="#{menuController.entrarLogin}" />
 				<h:commandButton value="Cadastro Usuário"
-					action="#{usuarioController.cadastroUsuario}" />
+					action="#{menuController.entrarCadastroUsuario}" />
+				<h:commandButton value="Cadastrar Carro"
+					action="#{menuController.entrarCadastroCarro}" />
+				<h:commandButton value="Consultar Usuário"
+					action="#{menuController.entrarConsultaUsuario}" />
 			</h:panelGrid>
 		</h:form>
 	</center>
