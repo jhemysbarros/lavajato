@@ -14,86 +14,86 @@ import br.unitins.lavajato.model.Marca;
 
 @Named
 @ViewScoped
+public class CarroController implements Serializable{
 
-public class CarroController implements Serializable {
-
-	private static final long serialVersionUID = -1950413541038990627L;
-
+	private static final long serialVersionUID = 2602034636682098082L;
+	
 	private Carro carro;
-
+	
 	private List<Carro> listaCarro = null;
-
-	public List<Carro> getListaCarro() {
+	
+	public List<Carro> getListaCarro(){
 		if (listaCarro == null) {
 			CarroDAO dao = new CarroDAO();
 			listaCarro = dao.findAll();
-			if (listaCarro == null) {
+			if (listaCarro == null)
 				listaCarro = new ArrayList<Carro>();
-			}
 			dao.closeConnection();
 		}
+		
 		return listaCarro;
 	}
-
-	public void editar(Integer id) {
+	
+	public void editar(int id) {
 		CarroDAO dao = new CarroDAO();
 		setCarro(dao.findById(id));
 	}
-
-	// Método para incluir um carro.
+	
+	
 	public void incluir() {
 		CarroDAO dao = new CarroDAO();
+
 		if (dao.create(getCarro())) {
 			limpar();
-			// Para atualizar o dataTable
+			// para atualizar o data table
 			listaCarro = null;
 		}
 		dao.closeConnection();
 	}
-
-	// Método para alterar um carro.
+	
 	public void alterar() {
 		CarroDAO dao = new CarroDAO();
 		if (dao.update(getCarro())) {
 			limpar();
-			// Para atualizar o dataTable
+			// para atualizar o data table
 			listaCarro = null;
 		}
 		dao.closeConnection();
 	}
-
-	// Método para excluir um carro.
+	
 	public void excluir() {
 		CarroDAO dao = new CarroDAO();
 		if (dao.delete(getCarro().getId())) {
 			limpar();
-			// Para atualizar o dataTable
+			// para atualizar o data table
 			listaCarro = null;
 		}
 		dao.closeConnection();
 	}
-
+	
 	public Marca[] getListaMarca() {
 		return Marca.values();
 	}
-
+	
 	public Categoria[] getListaCategoria() {
 		return Categoria.values();
 	}
-
-	// Método para limpar.
+	
 	public void limpar() {
 		carro = null;
 	}
+	
 
 	public Carro getCarro() {
 		if (carro == null) {
 			carro = new Carro();
 		}
+		
 		return carro;
 	}
 
 	public void setCarro(Carro carro) {
 		this.carro = carro;
 	}
+	
 }
