@@ -32,7 +32,7 @@ public class UsuarioDAO extends DAO<Usuario> {
 				usuario.setId(rs.getInt("id"));
 				usuario.setNome(rs.getString("nome"));
 				usuario.setLogin(rs.getString("login"));
-				usuario.setSenha(Util.encrypt(rs.getString("senha")));
+				usuario.setSenha(rs.getString("senha"));
 				usuario.setPerfil(Perfil.valueOf(rs.getInt("perfil")));
 				usuario.setDataNascimento(rs.getDate("datanascimento") == null ? null : (rs.getDate("datanascimento").toLocalDate()));
 			}
@@ -75,7 +75,7 @@ public class UsuarioDAO extends DAO<Usuario> {
 										+ " ? ) ");
 			stat.setString(1, obj.getNome());
 			stat.setString(2, obj.getLogin());
-			stat.setString(3, Util.encrypt(obj.getSenha()));			
+			stat.setString(3, obj.getSenha());			
 			stat.setInt(4, obj.getPerfil().getValue());
 			stat.setDate(5, (obj.getDataNascimento() == null ? null : java.sql.Date.valueOf(obj.getDataNascimento())));
 			stat.execute();
@@ -115,7 +115,7 @@ public class UsuarioDAO extends DAO<Usuario> {
 												   + "WHERE id = ? ");
 			stat.setString(1, obj.getNome());
 			stat.setString(2, obj.getLogin());
-			stat.setString(3, Util.encrypt(obj.getSenha()));
+			stat.setString(3, obj.getSenha());
 			stat.setInt(4, obj.getPerfil().getValue());
 			stat.setDate(5, (obj.getDataNascimento() == null ? null : java.sql.Date.valueOf(obj.getDataNascimento())));
 			stat.setInt(6, obj.getId());
@@ -189,7 +189,7 @@ public class UsuarioDAO extends DAO<Usuario> {
 				usuario.setId(rs.getInt("id"));
 				usuario.setNome(rs.getString("nome"));
 				usuario.setLogin(rs.getString("login"));
-				usuario.setSenha(Util.encrypt(rs.getString("senha")));
+				usuario.setSenha(rs.getString("senha"));
 				usuario.setPerfil(Perfil.valueOf(rs.getInt("perfil")));
 				usuario.setDataNascimento(rs.getDate("datanascimento") == null ? null : (rs.getDate("datanascimento").toLocalDate()));
 			}
@@ -226,7 +226,7 @@ public class UsuarioDAO extends DAO<Usuario> {
 				usuario.setId(rs.getInt("id"));
 				usuario.setNome(rs.getString("nome"));
 				usuario.setLogin(rs.getString("login"));
-				usuario.setSenha(Util.encrypt(rs.getString("senha")));
+				usuario.setSenha(rs.getString("senha"));
 				usuario.setPerfil(Perfil.valueOf(rs.getInt("perfil")));
 				usuario.setDataNascimento(rs.getDate("datanascimento") == null ? null : (rs.getDate("datanascimento").toLocalDate()));
 
@@ -268,7 +268,7 @@ public class UsuarioDAO extends DAO<Usuario> {
 				usuario.setId(rs.getInt("id"));
 				usuario.setNome(rs.getString("nome"));
 				usuario.setLogin(rs.getString("login"));
-				usuario.setSenha(Util.encrypt(rs.getString("senha")));
+				usuario.setSenha(rs.getString("senha"));
 				usuario.setPerfil(Perfil.valueOf(rs.getInt("perfil")));
 				usuario.setDataNascimento(rs.getDate("datanascimento") == null ? null : (rs.getDate("datanascimento").toLocalDate()));
 
